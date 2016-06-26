@@ -6,6 +6,9 @@
     "name": "Kevin Renskers",
     "email": "info@mixedcase.nl"
   },
+  "contributors": [
+    "Julian Mazzitelli <mazzitelli.julian@gmail.com>"
+  ],
   "bugs": {
     "url": "https://github.com/raml2html/raml2obj/issues"
   },
@@ -28,6 +31,7 @@
   },
   "preferGlobal": "false",
   "scripts": {
-    "lint": "eslint ./"
+    "lint": "eslint ./",
+    "test": "node test/todos/test.js"
   }
 }
