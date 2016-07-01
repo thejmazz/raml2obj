@@ -1,0 +1,82 @@
+{
+  "uses": [
+    {
+      "key": "lib",
+      "value": "lib1.raml"
+    }
+  ],
+  "title": "Customer API",
+  "version": "1.0",
+  "baseUri": "http://0.0.0.0:8081",
+  "protocols": [
+    "HTTP"
+  ],
+  "mediaType": "application/json",
+  "resources": [
+    {
+      "methods": [
+        {
+          "responses": {
+            "200": {
+              "code": "200",
+              "body": {
+                "application/json": {
+                  "name": "application/json",
+                  "displayName": "application/json",
+                  "type": [
+                    "lib.Employee[]"
+                  ],
+                  "repeat": false,
+                  "required": true,
+                  "__METADATA__": {
+                    "primitiveValuesMeta": {
+                      "displayName": {
+                        "calculated": true
+                      },
+                      "repeat": {
+                        "insertedAsDefault": true
+                      },
+                      "required": {
+                        "insertedAsDefault": true
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "protocols": [
+            "HTTP"
+          ],
+          "method": "get",
+          "__METADATA__": {
+            "primitiveValuesMeta": {
+              "protocols": {
+                "calculated": true
+              }
+            }
+          }
+        }
+      ],
+      "relativeUri": "/employees",
+      "displayName": "/employees",
+      "__METADATA__": {
+        "primitiveValuesMeta": {
+          "displayName": {
+            "calculated": true
+          }
+        }
+      },
+      "relativeUriPathSegments": [
+        "employees"
+      ]
+    }
+  ],
+  "__METADATA__": {
+    "primitiveValuesMeta": {
+      "protocols": {
+        "calculated": true
+      }
+    }
+  }
+}

@@ -1,0 +1,10 @@
+#%RAML 1.0 Library
+# lib2.raml
+
+uses:
+  lib: lib1.raml
+
+types:
+  Company:
+    properties:
+      employees: lib.Employee[]

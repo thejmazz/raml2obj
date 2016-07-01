@@ -1,0 +1,10 @@
+#%RAML 1.0 Library
+# lib1.raml
+
+uses:
+  lib: lib2.raml
+
+types:
+  Employee:
+    properties:
+      company: lib.Company

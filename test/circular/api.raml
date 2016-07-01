@@ -1,0 +1,16 @@
+#%RAML 1.0
+title: Customer API
+version: 1.0
+baseUri: http://0.0.0.0:8081
+mediaType: application/json
+
+uses:
+  lib: lib1.raml 
+
+/employees:
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            type: lib.Employee[]
