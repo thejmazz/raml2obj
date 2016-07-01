@@ -13,6 +13,7 @@
     "url": "https://github.com/raml2html/raml2obj/issues"
   },
   "dependencies": {
+    "circular-json": "^0.3.0",
     "q": "1.4.x",
     "raml-1-parser": "0.2.14"
   },

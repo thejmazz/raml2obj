@@ -1,6 +1,7 @@
 'use strict'
 
 const raml = require('raml-1-parser')
+const CircularJSON = require('circular-json')
 
 const tab = (num) => {
   let str = ''
@@ -21,20 +22,18 @@ const parse = (source, opts) => {
 
   let uses = api.uses()
   let usered = {}
-  let seen = []
+  let seen = {}
 
   const addUses = (use, obj) => {
+    // TODO use AST methods
     const { key, value } = use.toJSON()
 
     // keep track of RAML files visited
-    if (seen.indexOf(value) >= 0) {
-      obj.SEEN = value
+    if (value in seen) {
+      obj[key] = seen[value]
       return 
     }
 
-    // new file, add it to seen list
-    seen.push(value)
- 
     const api = raml.loadApiSync(path + value)
 
     obj[key] = { 
@@ -43,6 +42,9 @@ const parse = (source, opts) => {
       uses: {}
     }
 
+    // new file, add it to seen list
+    seen[value] = obj[key]
+    
     // for (let use of obj[useJSON.key].api.uses()) {
     for (let use of api.uses()) {
       addUses(use, obj[key].uses)
@@ -52,9 +54,9 @@ const parse = (source, opts) => {
   for (let use of uses) {
     addUses(use, usered)
   }
-  
-  console.log(JSON.stringify(usered, null, 2))
-  
+ 
+  const serializedUses = CircularJSON.stringify(usered, null, 2)
+  console.log(serializedUses)
 
   const apiResources = api.resources()
   let ramled = {}
