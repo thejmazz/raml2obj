@@ -24,63 +24,36 @@ const parse = (source, opts) => {
   let seen = []
 
   const addUses = (use, obj) => {
-    const useJSON = use.toJSON()
+    const { key, value } = use.toJSON()
+
     // keep track of RAML files visited
-    // dip if we encounter a seen one.
-    if (useJSON.key in seen) {
-      console.log('Prevented infinity')
+    if (seen.indexOf(value) >= 0) {
+      obj.SEEN = value
       return 
     }
-    seen.push(useJSON.value)
-  
-    obj[useJSON.key] = { 
-      path: useJSON.value,
-      api: raml.loadApiSync(path + useJSON.value),
+
+    // new file, add it to seen list
+    seen.push(value)
+ 
+    const api = raml.loadApiSync(path + value)
+
+    obj[key] = { 
+      path: value,
+      // api,
       uses: {}
     }
 
-    for (let use of obj[useJSON.key].api.uses()) {
-      // This will recurse until max. call stack size exceeded
-      // addUses(use, obj[useJSON.key].uses)
-      
-      // Just peek into the recursion:
-      // 1.
-      const useJSONInner = use.toJSON()
-
-      obj[useJSON.key].uses[useJSONInner.key] = {
-        path: useJSONInner.value,
-        api: raml.loadApiSync(path + useJSONInner.value),
-        uses: {}
-      }
-
-      // console.log(obj[useJSON.key].uses)
-
-      let useJSONInner2
-      // 2.
-      for (let use of obj[useJSON.key].uses[useJSONInner.key].api.uses()) {
-        useJSONInner2 = use.toJSON()
-
-        obj[useJSON.key].uses[useJSONInner.key].uses[useJSONInner2.key] = {
-          path: useJSONInner2.value,
-          api: raml.loadApiSync(path + useJSONInner2.value),
-          uses: {}
-        }
-
-        // console.log(useJSONInner2)
-      }
-
-      // console.log(obj[useJSON.key].uses[useJSONInner.key].uses)
-      console.log(obj[useJSON.key].uses)
-      console.log(obj[useJSON.key].uses[useJSONInner2.key].uses)
-    }
-
-    // console.log(usered[useJSON.key].api.toJSON())
-    console.log(usered)
+    // for (let use of obj[useJSON.key].api.uses()) {
+    for (let use of api.uses()) {
+      addUses(use, obj[key].uses)
+    }       
   }
 
   for (let use of uses) {
     addUses(use, usered)
   }
+  
+  console.log(JSON.stringify(usered, null, 2))
   
 
   const apiResources = api.resources()
